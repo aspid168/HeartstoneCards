@@ -1,4 +1,4 @@
-package ru.study.songsinfo
+package ru.study.HeartStoneCards
 
 import org.junit.Test
 
