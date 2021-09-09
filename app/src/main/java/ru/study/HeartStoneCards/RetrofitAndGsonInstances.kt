@@ -12,9 +12,11 @@ import ru.study.HeartStoneCards.repository.ServerRetrofit
 object RetrofitAndGsonInstances {
     val retrofit: ServerRetrofit
     val gson: Gson
+
     private const val URL = "https://omgvamp-hearthstone-v1.p.rapidapi.com/"
 
     init  {
+
         val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }

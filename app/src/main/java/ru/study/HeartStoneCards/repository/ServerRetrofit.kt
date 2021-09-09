@@ -1,13 +1,22 @@
 package ru.study.HeartStoneCards.repository
 
 import io.reactivex.Single
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import ru.study.HeartStoneCards.models.SongName
+import retrofit2.http.*
+import ru.study.HeartStoneCards.models.Card
+import ru.study.HeartStoneCards.models.Categories
+import ru.study.HeartStoneCards.models.ListOfCards
 
 interface ServerRetrofit {
 
-    @GET("cards")
-    @Headers("x-rapidapi-host:the-cocktail-db.p.rapidapi.com", "x-rapidapi-key:ed4b2e2176msh8349a6249b0d160p1b893djsn4e250e355e5e")
-    fun getAllCards(): Single<SongName> // get all info -> search by this info
+    @GET("info")
+    @Headers("x-rapidapi-host:omgvamp-hearthstone-v1.p.rapidapi.com", "x-rapidapi-key:6059a4e7bdmsh5b78dc6bd691948p1dbb5ajsn778bb9a0d70e")
+    fun getAllCategories(): Single<Categories>
+
+    @GET("cards/search/{text}")
+    @Headers("x-rapidapi-host:omgvamp-hearthstone-v1.p.rapidapi.com", "x-rapidapi-key:6059a4e7bdmsh5b78dc6bd691948p1dbb5ajsn778bb9a0d70e")
+    fun searchCards(@Path("text") text: String): Single<List<Card>>
+
+    @GET("cards/classes/{text}")
+    @Headers("x-rapidapi-host:omgvamp-hearthstone-v1.p.rapidapi.com", "x-rapidapi-key:6059a4e7bdmsh5b78dc6bd691948p1dbb5ajsn778bb9a0d70e")
+    fun getCardsByClass(@Path("text") text: String): Single<List<Card>>
 }

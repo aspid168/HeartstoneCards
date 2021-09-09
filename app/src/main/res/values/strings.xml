@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">HeartStone Cards</string>
+    <string name="name">name</string>
+    <string name="cardSet">card set</string>
+    <string name="type">type</string>
+    <string name="playerClass">player class</string>
+    <string name="text">text</string>
+    <string name="img">img</string>
+    <string name="faction">faction</string>
+    <string name="cost">cost</string>
+    <string name="attack">attack</string>
+    <string name="durability">durability</string>
 </resources>
