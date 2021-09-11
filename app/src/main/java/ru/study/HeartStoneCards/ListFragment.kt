@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.study.HeartStoneCards.models.Card
 import ru.study.HeartStoneCards.models.Categories
@@ -34,12 +35,11 @@ class ListFragment : Fragment() {
         liveData = ViewModelProvider(requireActivity()).get(LiveData::class.java)
 
         cardsCategories = view.findViewById(R.id.cardsCategories)
-        cardsCategories?.layoutManager = GridLayoutManager(requireContext(), 2)
+        cardsCategories?.layoutManager = LinearLayoutManager(requireContext())
         adapter = ClassesListAdapter {
             val act = requireActivity()
             if (act is MainActivityNavigator) {
                 liveData.setCurrentCardDetails(it)
-                Log.v("fr1", liveData.currentCardDetails.value.toString())
                 act.goToCardDetailsFragment()
             }
         }

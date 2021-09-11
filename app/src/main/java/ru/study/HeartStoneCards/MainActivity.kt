@@ -74,7 +74,7 @@ class  MainActivity : AppCompatActivity(), MainActivityNavigator {
 
     override fun goToCardDetailsFragment() {
         val cardDetailsFragment = CardDetailsFragment()
-        supportFragmentManager.beginTransaction().replace(R.id.mainContainer, cardDetailsFragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.mainContainer, cardDetailsFragment).addToBackStack(null).commit()
     }
 
 //    override fun onDestroy() {
