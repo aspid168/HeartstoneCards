@@ -57,17 +57,6 @@ class ClassesListAdapter(private val itemClickListener: (card: Card) -> Unit) : 
                 costDetails.visibility = View.GONE
             }
 
-//            card.attack?.let {
-//                attack.visibility = View.VISIBLE
-//                attackDetails.visibility = View.VISIBLE
-//                attackDetails.text = card.attack
-//            }
-//            card.cost?.let {
-//                cost.visibility = View.VISIBLE
-//                costDetails.visibility = View.VISIBLE
-//                costDetails.text = card.cost
-//            }
-
             itemView.setOnClickListener {
                 itemClickListener(card)
             }

@@ -25,7 +25,7 @@ object RetrofitAndGsonInstances {
             .addInterceptor(httpLoggingInterceptor)
             .build()
 
-        val rxAdapter = RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io())
+        val rxAdapter = RxJava2CallAdapterFactory.create()
 
         val retrofit = Retrofit.Builder()
             .baseUrl(URL)

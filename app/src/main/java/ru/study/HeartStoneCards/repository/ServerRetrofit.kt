@@ -1,10 +1,11 @@
 package ru.study.HeartStoneCards.repository
 
+import io.reactivex.Observable
 import io.reactivex.Single
+import retrofit2.Call
 import retrofit2.http.*
 import ru.study.HeartStoneCards.models.Card
 import ru.study.HeartStoneCards.models.Categories
-import ru.study.HeartStoneCards.models.ListOfCards
 
 interface ServerRetrofit {
 

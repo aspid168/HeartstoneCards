@@ -1,11 +1,13 @@
 package ru.study.HeartStoneCards
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
@@ -16,7 +18,7 @@ class  MainActivity : AppCompatActivity(), MainActivityNavigator {
 
     companion object {
         const val CLASS_NAME_EXTRA = "CLASS_NAME_EXTRA"
-        const val CARD_EXTRA = "CARD_EXTRA"
+        const val MAIN_TRANSACTION = "MAIN_TRANSACTION"
     }
 
     private var toolBar: Toolbar? = null
@@ -37,9 +39,7 @@ class  MainActivity : AppCompatActivity(), MainActivityNavigator {
         toolBar = findViewById(R.id.toolBar)
         setSupportActionBar(toolBar)
 
-
         liveData = ViewModelProvider(this).get(LiveData::class.java)
-
 
         drawerToggle = ActionBarDrawerToggle(
                 this,
@@ -56,9 +56,11 @@ class  MainActivity : AppCompatActivity(), MainActivityNavigator {
                     val listFragment = ListFragment()
                     val bundle = Bundle()
                     bundle.putString(CLASS_NAME_EXTRA, currentClass)
-                    listFragment.arguments = bundle
                     liveData.getCards(currentClass)
-                    supportFragmentManager.beginTransaction().replace(R.id.mainContainer, listFragment).commit()
+                    if (supportFragmentManager.backStackEntryCount > 0) {
+                        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                    }
+                    supportFragmentManager.beginTransaction().add(R.id.mainContainer, listFragment, MAIN_TRANSACTION).commit()
                     drawerLayout?.closeDrawers()
                     !drawerLayout?.isDrawerVisible(GravityCompat.START)!!
                 }
@@ -74,7 +76,10 @@ class  MainActivity : AppCompatActivity(), MainActivityNavigator {
 
     override fun goToCardDetailsFragment() {
         val cardDetailsFragment = CardDetailsFragment()
-        supportFragmentManager.beginTransaction().replace(R.id.mainContainer, cardDetailsFragment).addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.mainContainer, cardDetailsFragment)
+                .addToBackStack(null)
+                .commit()
     }
 
 //    override fun onDestroy() {

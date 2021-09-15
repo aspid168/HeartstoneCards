@@ -35,7 +35,10 @@ class LiveData: ViewModel() {
 
     fun setCurrentCardDetails(card: Card) {
         currentCardDetails.value = card
-        Log.v("liveDataItit", currentCardDetails.value.toString())
+    }
+
+    fun clearDisposeBag() {
+        repository.cancelTasks()
     }
 
 }

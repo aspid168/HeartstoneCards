@@ -39,6 +39,7 @@ class ListFragment : Fragment() {
         adapter = ClassesListAdapter {
             val act = requireActivity()
             if (act is MainActivityNavigator) {
+                liveData.clearDisposeBag()
                 liveData.setCurrentCardDetails(it)
                 act.goToCardDetailsFragment()
             }

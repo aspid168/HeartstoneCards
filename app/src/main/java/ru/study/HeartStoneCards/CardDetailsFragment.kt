@@ -2,17 +2,16 @@ package ru.study.HeartStoneCards
 
 import android.os.Build
 import android.os.Bundle
-import android.text.Html
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.core.text.HtmlCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
-import ru.study.HeartStoneCards.models.Card
 
 class CardDetailsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -64,11 +63,8 @@ class CardDetailsFragment : Fragment() {
             typeDetails?.text = it.type
             it.text?.let { text ->
                 textDetails?.visibility = View.VISIBLE
-                textDetails?.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    (Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY))
-                } else {
-                    Html.fromHtml(text);
-                }
+                val editedText = editCardText(text)
+                textDetails?.text = HtmlCompat.fromHtml(editedText, HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_HEADING)
             }
             it.faction?.let { faction ->
                 this.faction?.visibility = View.VISIBLE
@@ -92,5 +88,9 @@ class CardDetailsFragment : Fragment() {
                 durabilityDetails?.text = durability
             }
         })
+    }
+
+    private fun editCardText(text: String): String {
+        return text.replace("\\n", " ").replace("[x]", "")
     }
 }
