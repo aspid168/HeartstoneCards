@@ -11,4 +11,5 @@
     <string name="attack">attack</string>
     <string name="durability">durability</string>
     <string name="noImage">no image</string>
+    <string name="search">Search</string>
 </resources>

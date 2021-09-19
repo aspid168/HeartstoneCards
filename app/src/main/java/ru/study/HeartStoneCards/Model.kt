@@ -13,6 +13,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import ru.study.HeartStoneCards.models.Card
 import ru.study.HeartStoneCards.models.Categories
 import ru.study.HeartStoneCards.repository.Repository
+import kotlin.math.sin
 
 class Model : Repository {
 
@@ -28,12 +29,12 @@ class Model : Repository {
 //                    Log.v("error", it.localizedMessage.toString())
                 }
                 )
-        disposeBag.add(single)
     }
 
+    private var getCards: Disposable? = null
     override fun getCards(cardName: String, classData: MutableLiveData<List<Card>>) {
 
-        val single: Disposable = RetrofitAndGsonInstances.retrofit.getCardsByClass(cardName)
+        getCards= RetrofitAndGsonInstances.retrofit.getCardsByClass(cardName)
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(
                         {
@@ -42,14 +43,17 @@ class Model : Repository {
 //                    Log.v("error", it.localizedMessage.toString())
                 }
                 )
-        disposeBag.add(single)
+        disposeBag.add(getCards)
     }
 
-    override fun cancelTasks() {
-//        if (!disposeBag.isDisposed) {
-//            disposeBag.dispose()
-            disposeBag.clear()
-        Log.v("cancel", "task_cancel")
-//        }
+    override fun checkDisposeBag() {
+        if(disposeBag.size() > 1 && getCards != null) {
+            clearDisposeBag()
+        }
+    }
+
+    override fun clearDisposeBag() {
+        disposeBag.remove(getCards)
+        disposeBag.clear()
     }
 }

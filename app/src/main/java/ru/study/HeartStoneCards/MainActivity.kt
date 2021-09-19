@@ -2,8 +2,10 @@ package ru.study.HeartStoneCards
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -56,11 +58,12 @@ class  MainActivity : AppCompatActivity(), MainActivityNavigator {
                     val listFragment = ListFragment()
                     val bundle = Bundle()
                     bundle.putString(CLASS_NAME_EXTRA, currentClass)
+                    liveData.checkDisposeBag()
                     liveData.getCards(currentClass)
                     if (supportFragmentManager.backStackEntryCount > 0) {
                         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     }
-                    supportFragmentManager.beginTransaction().add(R.id.mainContainer, listFragment, MAIN_TRANSACTION).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.mainContainer, listFragment, MAIN_TRANSACTION).commit()
                     drawerLayout?.closeDrawers()
                     !drawerLayout?.isDrawerVisible(GravityCompat.START)!!
                 }
@@ -72,6 +75,28 @@ class  MainActivity : AppCompatActivity(), MainActivityNavigator {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         drawerToggle?.syncState()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        val menuItem = menu?.findItem(R.id.search_button)
+        val searchView = menuItem?.actionView
+        if (searchView is SearchView) {
+            searchView.queryHint = "Search"
+            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    // OBSERVE LIVE DATA
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+
+                    return false
+                }
+
+            })
+        }
+        return true
     }
 
     override fun goToCardDetailsFragment() {

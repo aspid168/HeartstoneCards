@@ -31,14 +31,15 @@ class LiveData: ViewModel() {
 
     fun getCards(currentClass: String) {
         repository.getCards(currentClass, classData)
+
     }
 
     fun setCurrentCardDetails(card: Card) {
         currentCardDetails.value = card
     }
 
-    fun clearDisposeBag() {
-        repository.cancelTasks()
+    fun checkDisposeBag() {
+        repository.checkDisposeBag()
     }
 
 }
