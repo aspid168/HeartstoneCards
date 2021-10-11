@@ -1,7 +1,4 @@
-package ru.study.HeartStoneCards.models
-
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+package ru.study.HeartStoneCards.domain.models
 
 data class Card(
     val name: String,

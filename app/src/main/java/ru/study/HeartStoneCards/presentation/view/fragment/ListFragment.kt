@@ -1,20 +1,17 @@
-package ru.study.HeartStoneCards
+package ru.study.HeartStoneCards.presentation.view.fragment
 
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ru.study.HeartStoneCards.models.Card
-import ru.study.HeartStoneCards.models.Categories
-import ru.study.HeartStoneCards.models.ListOfCards
+import ru.study.HeartStoneCards.R
+import ru.study.HeartStoneCards.presentation.view.adapter.ClassesListAdapter
+import ru.study.HeartStoneCards.presentation.MainActivityNavigator
+import ru.study.HeartStoneCards.presentation.viewModel.MainViewModel
 
 class ListFragment : Fragment() {
 
@@ -27,24 +24,24 @@ class ListFragment : Fragment() {
 
     private var cardsCategories: RecyclerView? = null
     private lateinit var adapter: ClassesListAdapter
-    private lateinit var liveData: LiveData
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        liveData = ViewModelProvider(requireActivity()).get(LiveData::class.java)
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
         cardsCategories = view.findViewById(R.id.cardsCategories)
         cardsCategories?.layoutManager = LinearLayoutManager(requireContext())
         adapter = ClassesListAdapter {
             val act = requireActivity()
             if (act is MainActivityNavigator) {
-                liveData.setCurrentCardDetails(it)
+                mainViewModel.setCurrentCardDetails(it)
                 act.goToCardDetailsFragment()
             }
         }
         cardsCategories?.adapter = adapter
-        liveData.classData.observe(requireActivity(), {
+        mainViewModel.classData.observe(requireActivity(), {
             (adapter).updateList(it)
         })
     }

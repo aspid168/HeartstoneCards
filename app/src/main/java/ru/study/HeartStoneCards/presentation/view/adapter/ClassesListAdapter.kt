@@ -1,15 +1,12 @@
-package ru.study.HeartStoneCards
+package ru.study.HeartStoneCards.presentation.view.adapter
 
-import android.media.Image
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
-import ru.study.HeartStoneCards.models.Card
+import ru.study.HeartStoneCards.R
+import ru.study.HeartStoneCards.domain.models.Card
 
 class ClassesListAdapter(private val itemClickListener: (card: Card) -> Unit) : RecyclerView.Adapter<ClassesListAdapter.ViewHolder>() {
     private var elements: List<Card> = listOf()

@@ -1,8 +1,8 @@
-package ru.study.HeartStoneCards
+package ru.study.HeartStoneCards.presentation.view.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -10,11 +10,13 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
-import ru.study.HeartStoneCards.models.Card
-import ru.study.HeartStoneCards.models.Categories
+import ru.study.HeartStoneCards.R
+import ru.study.HeartStoneCards.presentation.MainActivityNavigator
+import ru.study.HeartStoneCards.presentation.view.fragment.CardDetailsFragment
+import ru.study.HeartStoneCards.presentation.view.fragment.ListFragment
+import ru.study.HeartStoneCards.presentation.viewModel.MainViewModel
 
 class  MainActivity : AppCompatActivity(), MainActivityNavigator {
 
@@ -28,7 +30,7 @@ class  MainActivity : AppCompatActivity(), MainActivityNavigator {
     private var drawerLayout: DrawerLayout? = null
     private var navigationView: NavigationView? = null
 
-    private lateinit var liveData: LiveData
+    private lateinit var mainViewModel: MainViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +43,7 @@ class  MainActivity : AppCompatActivity(), MainActivityNavigator {
         toolBar = findViewById(R.id.toolBar)
         setSupportActionBar(toolBar)
 
-        liveData = ViewModelProvider(this).get(LiveData::class.java)
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         drawerToggle = ActionBarDrawerToggle(
                 this,
@@ -52,14 +54,14 @@ class  MainActivity : AppCompatActivity(), MainActivityNavigator {
         )
         drawerToggle?.let { drawerToggle -> drawerLayout?.addDrawerListener(drawerToggle) }
 
-        liveData.classes.observe(this, {
+        mainViewModel.classes.observe(this, {
             it.classes.forEach { currentClass ->
                 navigationView?.menu?.add(currentClass)?.setOnMenuItemClickListener {
                     val listFragment = ListFragment()
                     val bundle = Bundle()
                     bundle.putString(CLASS_NAME_EXTRA, currentClass)
-                    liveData.checkDisposeBag()
-                    liveData.getCards(currentClass)
+//                    mainViewModel.checkDisposeBag()
+                    mainViewModel.getCards(currentClass)
                     if (supportFragmentManager.backStackEntryCount > 0) {
                         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     }
@@ -85,17 +87,29 @@ class  MainActivity : AppCompatActivity(), MainActivityNavigator {
             searchView.queryHint = "Search"
             searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    // OBSERVE LIVE DATA
+                    query?.let {
+                        mainViewModel.changeClassData(query)
+                    }
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-
                     return false
                 }
 
             })
         }
+        menuItem?.setOnActionExpandListener (object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                mainViewModel.returnClassData()
+                return true
+            }
+
+        })
         return true
     }
 
@@ -106,13 +120,4 @@ class  MainActivity : AppCompatActivity(), MainActivityNavigator {
                 .addToBackStack(null)
                 .commit()
     }
-
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        toolBar = null
-//        drawerToggle = null
-//        drawerLayout = null
-//        navigationView = null
-//        observer = null
-//    }
 }

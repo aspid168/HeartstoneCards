@@ -1,13 +1,12 @@
 package ru.study.HeartStoneCards
 
 import com.google.gson.Gson
-import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.study.HeartStoneCards.repository.ServerRetrofit
+import ru.study.HeartStoneCards.domain.repository.ServerRetrofit
 
 object RetrofitAndGsonInstances {
     val retrofit: ServerRetrofit
@@ -34,7 +33,7 @@ object RetrofitAndGsonInstances {
             .addCallAdapterFactory(rxAdapter)
             .build()
 
-        this.retrofit = retrofit.create(ServerRetrofit::class.java)
-        this.gson = Gson()
+        RetrofitAndGsonInstances.retrofit = retrofit.create(ServerRetrofit::class.java)
+        gson = Gson()
     }
 }

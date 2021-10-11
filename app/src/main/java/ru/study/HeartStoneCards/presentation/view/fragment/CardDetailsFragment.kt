@@ -1,17 +1,17 @@
-package ru.study.HeartStoneCards
+package ru.study.HeartStoneCards.presentation.view.fragment
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
+import ru.study.HeartStoneCards.R
+import ru.study.HeartStoneCards.presentation.viewModel.MainViewModel
 
 class CardDetailsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +33,7 @@ class CardDetailsFragment : Fragment() {
     private var durability: TextView? = null
     private var image: ImageView? = null
     private var noImage: TextView? = null
-    private lateinit var liveData: LiveData
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,8 +52,8 @@ class CardDetailsFragment : Fragment() {
         attack = view.findViewById(R.id.attack)
         durability = view.findViewById(R.id.durability)
 
-        liveData = ViewModelProvider(requireActivity()).get(LiveData::class.java)
-        liveData.currentCardDetails.observe(requireActivity(), {
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+        mainViewModel.currentCardDetails.observe(requireActivity(), {
             it.img?.let { img ->
                 noImage?.visibility = View.GONE
                 Picasso.get().load(img).into(image)
